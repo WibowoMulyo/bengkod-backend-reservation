@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('total_seats');
-            $table->string('table_number');
+            $table->string('table_number')->unique();
             $table->string('thumbnail');
-            $table->boolean('is_available');
+            $table->boolean('is_available')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
