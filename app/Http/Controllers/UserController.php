@@ -18,7 +18,7 @@ class UserController extends Controller
             'data' => [
                 'name' => $user->name,
                 'email' => $user->email,
-                'foto_profil' => $user->foto_profil, // URL foto profil
+                'photo' => $user->photo,
             ]
         ]);
     }
@@ -29,17 +29,17 @@ class UserController extends Controller
 
         // Validasi input untuk foto profil
         $validated = $request->validate([
-            'foto_profil' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi tipe file gambar
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi tipe file gambar
         ]);
-
+        
         // Meng-handle upload foto
-        if ($request->hasFile('foto_profil')) {
-            $file = $request->file('foto_profil');
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
             $path = $file->store('profile_pictures', 'public'); // Menyimpan file di folder "profile_pictures"
 
-            // Update foto_profil di database
+            // Update photo di database
             $user->update([
-                'foto_profil' => $path, // Simpan path foto
+                'photo' => $path, // Simpan path foto
             ]);
         }
 
@@ -47,9 +47,9 @@ class UserController extends Controller
             'success' => true,
             'message' => 'Foto profil berhasil diupdate',
             'data' => [
-                'name' => $user->name, // Tetap tampilkan nama dan email
+                'name' => $user->name, // Tetap tampilkan nama dan email meskipun tidak bisa diupdate
                 'email' => $user->email,
-                'foto_profil' => $user->foto_profil,
+                'photo' => $user->foto_profil,
             ]
         ]);
     }
