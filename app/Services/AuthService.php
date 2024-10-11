@@ -45,14 +45,11 @@ class AuthService {
                     'photo' => $photo,
                     'reservation_tokens' => 4,
                 ]);
-            } else {
-                $user = User::all()->where('email', $email)->first();
             }
 
             $token = JWTAuth::fromUser($user);
 
             return [
-                'user' => $user,
                 'token' => $token,
             ];
         }
