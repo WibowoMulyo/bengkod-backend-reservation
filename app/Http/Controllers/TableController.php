@@ -29,7 +29,7 @@ class TableController extends Controller
     {
         $request->validate([
             'total_seats' => 'required|integer|min:1',
-            'table_number' => 'required|integer|unique:tables,table_number',
+            'table_number' => 'required|string|unique:tables,table_number',
             'thumbnail' => 'nullable|string',
             'is_available' => 'required|boolean',
         ]);
@@ -56,7 +56,7 @@ class TableController extends Controller
 
         $request->validate([
             'total_seats' => 'required|integer|min:1',
-            'table_number' => 'required|integer|unique:tables,table_number,' . $id,
+            'table_number' => 'required|string|unique:tables,table_number,' . $id,
             'thumbnail' => 'nullable|string',
             'is_available' => 'required|boolean',
         ]);
