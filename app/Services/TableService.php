@@ -54,8 +54,5 @@ class TableService
     {
         $table = Table::findOrFail($id);
         $table->delete();
-        return response()->json([
-            'message' => 'Table deleted successfully'
-        ], 200);
     }
 }
