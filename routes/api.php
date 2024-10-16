@@ -14,15 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-<<<<<<< HEAD
-Route::post('/register', action: [AuthController::class, 'regsiter']);
 Route::post('/login', action: [AuthController::class, 'login']);
-Route::post('/logout', action: [AuthController::class, 'logout'])->middleware('auth:api');
+Route::post('/logout', action: [AuthController::class, 'logout']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();    
-=======
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 >>>>>>> main
 });
