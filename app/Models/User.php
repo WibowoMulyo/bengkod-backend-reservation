@@ -21,7 +21,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
-        'email',
+        'email_mhs',
         'password',
         'photo',
         'is_admin',
@@ -47,6 +47,11 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
         'is_admin' => 'boolean',
     ];
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->email_mhs;
+    }
 
     public function detailReservations(): HasMany{
         return $this->hasMany(DetailReservation::class);
