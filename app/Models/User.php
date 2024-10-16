@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'email_mhs',
         'password',
         'photo',
         'is_admin',
@@ -46,6 +46,11 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_admin' => 'boolean',
     ];
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->email_mhs;
+    }
 
     public function detailReservations(): HasMany{
         return $this->hasMany(DetailReservation::class);

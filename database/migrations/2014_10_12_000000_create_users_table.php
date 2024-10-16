@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email_mhs')->unique();
             $table->string('password');
-            $table->string('photo');
+            $table->string('photo')->default('default.jpg');
             $table->boolean('is_admin');
             $table->unsignedBigInteger('reservation_tokens ')->default(4);
             $table->softDeletes();
