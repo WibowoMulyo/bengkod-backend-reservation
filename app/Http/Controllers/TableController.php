@@ -19,9 +19,9 @@ class TableController extends Controller
     {
         try{
             $tables = $this->tableService->getAllTable();
-            return ApiResponseService::success($tables, 'Table retrieved successfully', 201);
+            return ApiResponseService::success($tables, 'Table retrieved successfully', 200);
         } catch (\Exception $e) {
-            return ApiResponseService::error((object) [], 'Failed to retrieve table', 401);
+            return ApiResponseService::error((object) [], 'Failed to retrieve table', 500);
         }
     }
 
@@ -31,7 +31,7 @@ class TableController extends Controller
             $table = $this->tableService->createTable($request);
             return ApiResponseService::success($table, 'Table created successfully', 201);
         } catch (\Exception $e) {
-            return ApiResponseService::error((object) [], 'Failed to create table', 401);
+            return ApiResponseService::error((object) [], 'Failed to create table', 500);
         }
     }
 
@@ -39,9 +39,9 @@ class TableController extends Controller
     {
         try{
             $table = $this->tableService->getTableById($id);
-            return ApiResponseService::success($table, 'Table by id retrieved successfully', 201);
+            return ApiResponseService::success($table, 'Table by id retrieved successfully', 200);
         } catch (\Exception $e){
-            return ApiResponseService::error((object) [], 'Failed to retrieve table by id', 401);
+            return ApiResponseService::error((object) [], 'Failed to retrieve table by id', 500);
         }
     }
 
@@ -49,9 +49,9 @@ class TableController extends Controller
     {
         try{
             $table = $this->tableService->updateTable($request, $id);
-            return ApiResponseService::success($table,'Table updated successfully', 201);
+            return ApiResponseService::success($table,'Table updated successfully', 200);
         } catch (\Exception $e){
-            return ApiResponseService::error((object) [], 'Failed to update table', 401);
+            return ApiResponseService::error((object) [], 'Failed to update table', 500);
         }
     }
 
@@ -59,9 +59,9 @@ class TableController extends Controller
     {
         try{
             $this->tableService->destroy($id);
-            return ApiResponseService::success([],'Table deleted successfully', 201);
+            return ApiResponseService::success([],'Table deleted successfully', 200);
         } catch (\Exception $e){
-            return ApiResponseService::error((object) [], 'Failed to delete table', 401);
+            return ApiResponseService::error((object) [], 'Failed to delete table', 500);
         }
     }
 }

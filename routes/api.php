@@ -23,8 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::middleware(['auth:api', 'admin'])->group(function () {
-//     Route::resource('table', TableController::class);
-// });
-// Sementara menghilangkan middleware untuk testing
-Route::resource('table', TableController::class);
+Route::middleware(['auth:api', 'admin'])->group(function () {
+    Route::resource('table', TableController::class);
+});
