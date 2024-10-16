@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('photo');
             $table->boolean('is_admin');
-            $table->unsignedInteger('reservation_tokens')->default(4);
+            $table->unsignedBigInteger('reservation_tokens ')->default(4);
             $table->softDeletes();
             $table->timestamps();
         });
