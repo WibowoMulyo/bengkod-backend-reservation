@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-<<<<<<< HEAD
-=======
-Route::post('/login', action: [AuthController::class, 'login']);
-Route::post('/logout', action: [AuthController::class, 'logout']);
-
->>>>>>> parent of 5b37b45 (Fixed login endpoint)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
