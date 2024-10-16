@@ -14,7 +14,7 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function regsiter(Request $request) {
+    public function register(Request $request) {
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
