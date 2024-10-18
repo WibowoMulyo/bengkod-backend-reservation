@@ -19,7 +19,7 @@ class UserController extends Controller
     public function show()
     {
         try{
-            $userId = Auth::id(); // Mendapatkan ID user yang sedang login
+            $userId = Auth::id();
             $user = $this->userService->getUserData($userId);
             return ApiResponseService::success($user, 'User data retrieved successfully', 200);
         }catch (\Exception $e){
@@ -33,7 +33,7 @@ class UserController extends Controller
             $userId = Auth::id();
             $validatedData = $request->validate([
                 'name' => 'sometimes|string|max:255',
-                'email_mhs' => 'sometimes||string|email|unique:users,email,' . $userId,
+                'email_mhs' => 'sometimes||string|email|unique:users,email_mhs,' . $userId,
                 'password' => 'sometimes|string|min:6|confirmed',
                 'photo' => 'sometimes|string',
             ]);
@@ -41,11 +41,16 @@ class UserController extends Controller
             if (isset($validatedData['password'])) {
                 $validatedData['password'] = bcrypt($validatedData['password']);
             }
-    
+
             $user = $this->userService->updateUserData($userId, $validatedData);
+
             return ApiResponseService::success($user, 'User data updated successfully', 200);
-        }catch (\Exception $e){
-            return ApiResponseService::error(null, 'Failed to update user data', 400);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return ApiResponseService::error($e->errors(), 'Validation failed', 422);
+                
+        } catch (\Exception $e) {
+            return ApiResponseService::error(null, 'Failed to update user data: ' . $e->getMessage(), 400);
         }
     }
 }
