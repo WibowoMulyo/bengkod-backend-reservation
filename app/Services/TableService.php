@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Table;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class TableService
@@ -14,44 +15,37 @@ class TableService
 
     public function getTableById($id)
     {
-        return Table::findOrFail($id);
-    }
-
-    public function createTable(Request $request)
-    {
-        $request->validate([
-            'total_seats' => 'required|integer|min:1',
-            'table_number' => 'required|string|unique:tables,table_number',
-            'thumbnail' => 'nullable|string',
-            'is_available' => 'required|boolean',
-        ]);
-
-        return Table::create([
-            'total_seats' => $request->total_seats,
-            'table_number' => $request->table_number,
-            'thumbnail' => $request->thumbnail,
-            'is_available' => $request->is_available,
-        ]);
-    }
-
-    public function updateTable(Request $request, string $id)
-    {
         $table = Table::findOrFail($id);
+        if (!$table) {
+            throw new ModelNotFoundException("Table with ID $id not found.");
+        }
 
-        $request->validate([
-            'total_seats' => 'sometimes|integer|min:1',
-            'table_number' => 'sometimes|string|unique:tables,table_number,' . $id,
-            'thumbnail' => 'nullable|string',
-            'is_available' => 'required|boolean',
-        ]);
-
-        $table->update($request->only(['total_seats', 'table_number', 'thumbnail', 'is_available']));
         return $table;
     }
 
-    public function destroy(string $id)
+    public function createTable($totalSeats, $tableNumber, $thumbnail, $isAvailable)
     {
-        $table = Table::findOrFail($id);
+        Table::create([
+            'total_seats' => $totalSeats,
+            'table_number' => $tableNumber,
+            'thumbnail' => $thumbnail,
+            'is_available' => $isAvailable,
+        ]);
+
+        return (object)[];
+    }
+
+    public function updateTable($id, array $data)
+    {
+        $table = $this->getTableById($id);
+        $table->update($data);
+
+        return (object)[];
+    }
+
+    public function destroy($id)
+    {
+        $table = $this->getTableById($id);
         $table->delete();
     }
 }
