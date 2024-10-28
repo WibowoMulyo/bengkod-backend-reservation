@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('email_mhs')->unique();
             $table->string('password');
             $table->string('photo')->default('default.jpg');
-            $table->boolean('is_admin');
-            $table->unsignedBigInteger('reservation_tokens ')->default(4);
+            $table->unsignedBigInteger('penalty_count')->default(0);
+            $table->timestamp('ban_until')->nullable();
+            $table->boolean('is_admin')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

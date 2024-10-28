@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['pending', 'approved', 'declined'])->default('pending');
-            $table->enum('reservation_type ', ['individual', 'group']);
-            $table->string('reservation_code')->unique();
-            $table->date('reservation_date');
-            $table->time('started_at');
-            $table->time('ended_at');
+            $table->string('code')->unique();
+            $table->string('status');
+            $table->string('type');
+            $table->string('purpose');
+            $table->string('time_slot');
+            $table->date('date');
             $table->softDeletes();
             $table->timestamps();
         });
+
     }
 
     /**
