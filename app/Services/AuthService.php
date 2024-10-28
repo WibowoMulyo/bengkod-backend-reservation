@@ -28,8 +28,8 @@ class AuthService {
             'email_mhs' => $emailMhs,
             'password' => bcrypt($password),
             'photo' => 'default.jpg',
+            'penalty_count' => 0,
             'is_admin' => false,
-            'reservation_tokens' => 4,
         ]);
 
         return (object)[];
