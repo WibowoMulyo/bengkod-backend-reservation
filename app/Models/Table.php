@@ -21,7 +21,7 @@ class Table extends Model
         'is_available' => 'boolean',
     ];
 
-    public function detailReservations(): HasMany{
-        return $this->hasMany(DetailReservation::class);
+    public function Reservations(): HasMany{
+        return $this->hasMany(Reservation::class);
     }
 }

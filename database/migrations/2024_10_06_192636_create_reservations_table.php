@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('purpose');
             $table->string('time_slot');
             $table->date('date');
+            $table->foreignId('table_id')->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
