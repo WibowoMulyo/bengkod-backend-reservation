@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Services\ApiResponseService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -26,20 +27,35 @@ class UserController extends Controller
             return ApiResponseService::error(null, 'Failed retrieve user data', 400);
         }
     }
-
-    public function update(Request $request)
+    public function showUserProfile()
     {
         try{
             $userId = Auth::id();
-            $validatedData = $request->validate([
-                'name' => 'sometimes|string|max:255',
-                'email_mhs' => 'sometimes||string|email|unique:users,email_mhs,' . $userId,
-                'password' => 'sometimes|string|min:6|confirmed',
-                'photo' => 'sometimes|string',
-            ]);
+            $user = $this->userService->getUserProfile($userId);
+            return ApiResponseService::success($user, 'User data retrieved successfully', 200);
+        }catch (\Exception $e){
+            return ApiResponseService::error(null, 'Failed retrieve user data', 400);
+        }
+    }
+    public function update(UpdateUserRequest $request)
+    {
+        try{
+            $userId = Auth::id();
+            $validatedData = $request->validated();
 
             if (isset($validatedData['password'])) {
                 $validatedData['password'] = bcrypt($validatedData['password']);
+            }
+
+            if($request->hasFile('photo')){
+                $user = $this->userService->getUserData($userId);
+
+                if ($user->photo) {
+                    Storage::delete('public/photos/' . $user->photo);
+                }
+
+                $photoPath = $request->file('photo')->store('public/photos');
+                $validatedData['photo'] = basename($photoPath);
             }
 
             $user = $this->userService->updateUserData($userId, $validatedData);
