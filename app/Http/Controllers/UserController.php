@@ -40,25 +40,9 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request)
     {
         try{
-            $userId = Auth::id();
             $validatedData = $request->validated();
 
-            if (isset($validatedData['password'])) {
-                $validatedData['password'] = bcrypt($validatedData['password']);
-            }
-
-            if($request->hasFile('photo')){
-                $user = $this->userService->getUserData($userId);
-
-                if ($user->photo) {
-                    Storage::delete('public/photos/' . $user->photo);
-                }
-
-                $photoPath = $request->file('photo')->store('public/photos');
-                $validatedData['photo'] = basename($photoPath);
-            }
-
-            $user = $this->userService->updateUserData($userId, $validatedData);
+            $user = $this->userService->updateUserData($validatedData);
 
             return ApiResponseService::success($user, 'User data updated successfully', 200);
 

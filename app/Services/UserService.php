@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
@@ -21,9 +23,24 @@ class UserService
         return $user;
     }
 
-    public function updateUserData($userId, array $data)
+    public function updateUserData(array $data)
     {
+        $userId = Auth::id();
         $user = User::findOrFail($userId);
+        
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        if(isset($data['photo'])){
+            if ($user->photo) {
+                Storage::delete('public/photos/' . $user->photo);
+            }
+
+            $photoPath = $data['photo']->store('public/photos');
+            $data['photo'] = basename($photoPath);
+        }
+
         $user->update($data);
         return $user;
     }

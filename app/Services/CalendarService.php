@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class CalendarService
 {
-    public function getWeeklyReservations($tableId = null)
+    public function getWeeklyReservations($tableId)
     {
         $startOfCurrentWeek  = Carbon::now()->startOfWeek(Carbon::MONDAY);
         $endOfCurrentWeek = $startOfCurrentWeek->copy()->addDays(4);
