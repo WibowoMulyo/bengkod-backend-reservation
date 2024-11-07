@@ -20,13 +20,13 @@ class CalendarController extends Controller
         try{
             $tableId = $request->input("table_id", 1);
             $reservations = $this->calendarService->getWeeklyReservations($tableId);
-            return ApiResponseService::success($reservations, 'Calender data fetched successfully', 200);
+            return ApiResponseService::success($reservations, 'Berhasil mengambil data kalender', 200);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return ApiResponseService::error($e->errors(), 'Validation failed', 422);
+            return ApiResponseService::error($e->errors(), 'Validasi gagal', 422);
                 
         } catch (\Exception $e) {
-            return ApiResponseService::error(null, 'Failed to fetch calender data: ' . $e->getMessage(), 400);
+            return ApiResponseService::error((object)[], 'Gagal mengambil data kalender: ' . $e->getMessage(), 400);
         }
     }
 }

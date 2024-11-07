@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             TableSeeder::class,
             ReservationSeeder::class,
             DetailReservationSeeder::class,
+            UserAdminSeeder::class,
         ]);
         
         // \App\Models\User::factory(10)->create();

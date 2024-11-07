@@ -15,11 +15,10 @@ class UserAdminSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@admin.com',
+            'email_mhs' => 'admin@admin.com',
             'password' => bcrypt('rahasia12'),
             'photo' => 'default.jpg',
             'is_admin' => true,
-            'reservation_tokens' => 0,
         ]);
     }
 }

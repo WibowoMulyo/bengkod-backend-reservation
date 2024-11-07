@@ -23,7 +23,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:api', 'admin'])->group(function () {
-    Route::resource('table', TableController::class);
+    Route::apiResource('table', TableController::class);
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -32,7 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', [UserController::class, 'show']);
     
     Route::get('/user-profile', [UserController::class, 'showUserProfile']);
-    Route::post('/user-update', [UserController::class, 'update']);
+    Route::patch('/user-update', [UserController::class, 'update']);
     Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
 });
 
