@@ -14,13 +14,13 @@ class AuthService {
     protected $apiUrl;
 
     public function register($name, $emailMhs, $password, $passwordConf) {
-        if ($password != $passwordConf) {
-            throw new AuthenticationException('Password dan konfirmasi password tidak sesuai.');
+        if ($password !== $passwordConf) {
+            throw new AuthenticationException('Password dan konfirmasi password tidak cocok. Silakan coba lagi!');
         }
 
         $existingUser = User::where('email_mhs', $emailMhs)->first();
         if ($existingUser) {
-            throw new AuthenticationException('Email sudah terdaftar.');
+            throw new AuthenticationException('Email ini sudah terdaftar. Coba gunakan email lain, ya!');
         }
 
         User::create([
@@ -36,15 +36,20 @@ class AuthService {
     }
 
     public function login($emailMhs, $password) {
+        $user = $this->validateCredentials($emailMhs, $password);
+        $token = JWTAuth::fromUser($user);
+
+        return ['token' => $token];
+    }
+
+    public function validateCredentials($emailMhs, $password){
         $user = User::where('email_mhs', $emailMhs)->first();
 
         if (!$user || !Hash::check($password, $user->password)) {
             throw new AuthenticationException('Email atau password salah.');
         }
 
-        $token = JWTAuth::fromUser($user);
-
-        return ['token' => $token];
+        return $user;
     }
 
     public function logout(){
