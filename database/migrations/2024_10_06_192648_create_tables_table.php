@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('total_seats');
             $table->string('table_number')->unique();
             $table->string('thumbnail');
+            $table->string('type');
             $table->boolean('is_available')->default(true);
             $table->softDeletes();
             $table->timestamps();
