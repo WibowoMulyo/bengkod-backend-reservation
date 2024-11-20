@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TableController;
 use Illuminate\Http\Request;
@@ -29,10 +30,12 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/user', [UserController::class, 'show']);
+    Route::apiResource('user',UserController::class);
+    // Route::get('/user-profile', [UserController::class, 'showUserProfile']);
     
-    Route::get('/user-profile', [UserController::class, 'showUserProfile']);
-    Route::patch('/user-update', [UserController::class, 'update']);
     Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
+
+    Route::get('/map', [MapController::class, 'getAvailableTables']);
+    Route::get('/detail-reservation-table', [MapController::class, 'getTableDetails']);
 });
 

@@ -23,10 +23,15 @@ class UserService
         return $user;
     }
 
-    public function updateUserData(array $data)
+    public function updateUserData(int $userIdFromUrl, array $data)
     {
-        $userId = Auth::id();
-        $user = User::findOrFail($userId);
+        $currentUserId = Auth::id(); 
+        
+        if ($userIdFromUrl != $currentUserId) {
+            throw new \Exception('Anda tidak diizinkan mengupdate data pengguna lain.', 403);
+        }
+        
+        $user = User::findOrFail($currentUserId);
         
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
@@ -42,6 +47,27 @@ class UserService
         }
 
         $user->update($data);
+        return (object)[];
+    }
+    public function destroy(int $userIdFromUrl)
+    {
+        $currentUserId = Auth::id(); 
+        
+        if ($userIdFromUrl != $currentUserId) {
+            throw new \Exception('Anda tidak diizinkan menghapus data pengguna lain.', 403);
+        }
+
+        $user = User::findOrFail($userIdFromUrl);
+
+        if ($user->photo) {
+            $photoPath = 'public/photos/' . $user->photo;
+            
+            if (Storage::exists($photoPath)) {
+                Storage::delete($photoPath);
+            }
+            
+            $user->update(['photo' => 'default.jpg']);
+        }
         return (object)[];
     }
 }
