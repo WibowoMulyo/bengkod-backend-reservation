@@ -5,9 +5,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TableController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +29,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('user',UserController::class);
-    // Route::get('/user-profile', [UserController::class, 'showUserProfile']);
+    Route::get('/user-profile', [UserController::class, 'show']);
     
     Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
 

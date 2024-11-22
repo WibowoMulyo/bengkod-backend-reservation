@@ -14,6 +14,7 @@ class Table extends Model
         'total_seats',
         'table_number',
         'thumbnail',
+        'type',
         'is_available',
     ];
 

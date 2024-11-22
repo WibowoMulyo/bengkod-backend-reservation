@@ -39,6 +39,7 @@ class UpdateTableRequest extends FormRequest
             'total_seats' => 'sometimes|integer|min:1',
             'table_number' => 'sometimes|string|unique:tables,table_number,' . $this->id,
             'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg|max:20000',
+            'type' => 'sometimes|string|in:Individu,Kelompok',
             'is_available' => 'sometimes|boolean',
         ];
     }
