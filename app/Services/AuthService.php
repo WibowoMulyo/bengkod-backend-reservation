@@ -43,8 +43,11 @@ class AuthService {
         }
 
         $token = JWTAuth::fromUser($user);
+        
+        $response = $user->toArray();
+        $response['token'] = $token;
 
-        return ['token' => $token];
+        return $response;
     }
 
     public function logout(){
