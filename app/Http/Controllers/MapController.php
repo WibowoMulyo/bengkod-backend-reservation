@@ -20,7 +20,7 @@ class MapController extends Controller
         try{
             $validated = $request->validated();
             $totalSeats = $validated['total_seats'] ?? 1;
-            $tables = $this->mapService->getAvailableTables( $validated['type'], $totalSeats);
+            $tables = $this->mapService->getAvailableTables( $validated['type'],  $validated['date'], $totalSeats);
             return ApiResponseService::success($tables, 'Berhasil mengambil data meja', 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return ApiResponseService::error($e->errors(), 'Validasi gagal', 422);

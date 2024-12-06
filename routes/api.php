@@ -27,9 +27,11 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    
+    Route::get('/get-user',[UserController::class, 'showUser']);
+    Route::patch('/update-user',[UserController::class, 'updateUserProfile']);
 
-    Route::apiResource('user',UserController::class);
-    Route::get('/user-profile', [UserController::class, 'show']);
+    Route::get('/user-profile', [UserController::class, 'showUserProfile']);
     
     Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
 

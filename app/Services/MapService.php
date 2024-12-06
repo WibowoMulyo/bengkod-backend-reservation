@@ -3,11 +3,25 @@
 namespace App\Services;
 
 use App\Models\Table;
+use Carbon\Carbon;
+use Exception;
 
 class MapService
 {
-    public function getAvailableTables(string $type, int $totalSeats)
+    public function getAvailableTables(string $type, $date, int $totalSeats)
     {
+        $lastDayLimit = Carbon::now()->addDay(3)->toDateString();
+        $inputDate = Carbon::parse($date);
+        $limitDate = Carbon::parse($lastDayLimit);
+
+        if ($inputDate->lessThan(Carbon::now()->subDay(1))) {
+            throw new Exception("Input tanggal tidak boleh kurang dari hari ini");
+        }
+
+        if ($inputDate->greaterThan($limitDate)) {
+            throw new Exception("Input tanggal tidak boleh lebih dari 3 hari, dari hari ini");
+        }
+        
         return Table::where('type', $type)
         ->where('total_seats', '>=', $totalSeats)
         ->select('id', 'table_number', 'is_available')
