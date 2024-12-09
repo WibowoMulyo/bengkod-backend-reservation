@@ -45,8 +45,10 @@ Route::get('/reservations/confirm-team/{reservationId}/{userId}', [ReservationCo
 Route::resource('table', TableController::class)->middleware(['auth:api', 'admin']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::apiResource('user', UserController::class);
-Route::get('/user-profile', [UserController::class, 'show']);
+Route::get('/get-user', [UserController::class, 'showUser']);
+    Route::patch('/update-user',[UserController::class, 'updateUserProfile']);
+
+Route::get('/user-profile', [UserController::class, 'showUserProfile']);
 
 Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
 

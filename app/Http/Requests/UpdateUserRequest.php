@@ -34,7 +34,6 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'email_mhs' => 'sometimes|string|email|unique:users,email_mhs,' . $this->user_id,
             'password' => 'sometimes|string|min:6|confirmed',
             'photo' => 'sometimes|file|mimes:jpeg,png,jpg|max:20000',
         ];
