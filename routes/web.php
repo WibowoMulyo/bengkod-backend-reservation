@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ReservationController;
+use App\Mail\TeamReservationConfirmationMail;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*

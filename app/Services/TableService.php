@@ -4,42 +4,61 @@ namespace App\Services;
 
 use App\Models\Table;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TableService
 {
     public function getAllTable()
     {
-        return Table::all();
+        $tables = Table::all();
+
+        foreach($tables as $table){
+            if ($table->thumbnail) {
+                $table->thumbnail = url("storage/thumbnails/{$table->thumbnail}");
+            }
+        }
+        return $table;
     }
 
     public function getTableById($id)
     {
         $table = Table::findOrFail($id);
+
         if (!$table) {
             throw new ModelNotFoundException("Table with ID $id not found.");
         }
 
+        if ($table->thumbnail) {
+            $table->thumbnail = url("storage/thumbnails/{$table->thumbnail}");
+        }
         return $table;
     }
 
-    public function createTable($totalSeats, $tableNumber, $thumbnail, $isAvailable)
+    public function createTable(array $data)
     {
-        Table::create([
-            'total_seats' => $totalSeats,
-            'table_number' => $tableNumber,
-            'thumbnail' => $thumbnail,
-            'is_available' => $isAvailable,
-        ]);
+        if ($data['thumbnail']) {
+            $thumbnailPath = $data['thumbnail']->store('public/thumbnails');
+            $data['thumbnail'] = basename($thumbnailPath);
+        }
 
+        Table::create($data);
         return (object)[];
     }
 
     public function updateTable($id, array $data)
     {
         $table = $this->getTableById($id);
-        $table->update($data);
+        
+        if(isset($data['thumbnail'])){
+            if ($table->thumbnail) {
+                Storage::delete('public/thumbnails/' . $table->thumbnail);
+            }
+            
+            $thumbnailPath = $data['thumbnail']->store('public/thumbnails');
+            $data['thumbnail'] = basename($thumbnailPath);
+        }
 
+        $table->update($data);
         return (object)[];
     }
 

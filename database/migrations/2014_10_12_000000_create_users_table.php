@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('photo')->default('default.jpg');
             $table->unsignedBigInteger('penalty_count')->default(0);
             $table->timestamp('ban_until')->nullable();
+            $table->boolean('is_reserve')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->softDeletes();
             $table->timestamps();

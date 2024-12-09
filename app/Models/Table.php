@@ -10,10 +10,14 @@ class Table extends Model
 {
     use HasFactory;
 
+    const TYPE_OPTIONS = ['Individu', 'Kelompok', 'Bersama'];
+
     protected $fillable = [
         'total_seats',
+        'available_seats',
         'table_number',
         'thumbnail',
+        'type',
         'is_available',
     ];
 
