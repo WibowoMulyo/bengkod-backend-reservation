@@ -13,6 +13,7 @@ class DetailReservation extends Model
     protected $fillable = [
         'user_id',
         'reservation_id',
+        'status'
     ];
 
     public function user(): BelongsTo{
@@ -21,5 +22,4 @@ class DetailReservation extends Model
     public function reservation(): BelongsTo{
         return $this->belongsTo(Reservation::class, 'reservation_id');
     }
-
 }

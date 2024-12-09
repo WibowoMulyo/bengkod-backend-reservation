@@ -13,6 +13,7 @@ class DetailReservationSeeder extends Seeder
             [
                 'user_id' => 1,
                 'reservation_id' => 1,
+                'status' => 'Terkonfirmasi'
             ],
         ]);
     }

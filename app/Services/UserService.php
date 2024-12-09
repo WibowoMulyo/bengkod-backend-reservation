@@ -16,7 +16,7 @@ class UserService
     public function getUserProfile($userId)
     {
         $user  = User::select('name', 'email_mhs', 'photo')->where('id', $userId)->first();
-        
+
         if ($user && $user->photo) {
             $user->photo = url("storage/photos/{$user->photo}");
         }
@@ -25,14 +25,17 @@ class UserService
 
     public function updateUserData(int $userIdFromUrl, array $data)
     {
-        $currentUserId = Auth::id(); 
-        
+        $userId = Auth::id();
+        $user = User::findOrFail($userId);
+
+        $currentUserId = Auth::id();
+
         if ($userIdFromUrl != $currentUserId) {
             throw new \Exception('Anda tidak diizinkan mengupdate data pengguna lain.', 403);
         }
-        
+
         $user = User::findOrFail($currentUserId);
-        
+
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }
@@ -51,8 +54,8 @@ class UserService
     }
     public function destroy(int $userIdFromUrl)
     {
-        $currentUserId = Auth::id(); 
-        
+        $currentUserId = Auth::id();
+
         if ($userIdFromUrl != $currentUserId) {
             throw new \Exception('Anda tidak diizinkan menghapus data pengguna lain.', 403);
         }
@@ -61,11 +64,11 @@ class UserService
 
         if ($user->photo) {
             $photoPath = 'public/photos/' . $user->photo;
-            
+
             if (Storage::exists($photoPath)) {
                 Storage::delete($photoPath);
             }
-            
+
             $user->update(['photo' => 'default.jpg']);
         }
         return (object)[];

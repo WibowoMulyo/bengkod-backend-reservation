@@ -26,6 +26,7 @@ class Reservation extends Model
         'purpose',
         'time_slot',
         'date',
+        'expires_at',
     ];
 
     protected $casts = [

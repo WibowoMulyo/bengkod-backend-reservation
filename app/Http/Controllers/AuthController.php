@@ -24,12 +24,12 @@ class AuthController extends Controller
                     'unique:users,email_mhs',
                     function ($attribute, $value, $fail) {
                         if (!str_ends_with($value, '@mhs.dinus.ac.id')) {
-                            $fail('Email harus menggunakan domain @mhs.dinus.ac.id.');
+                            $fail('Oops! Email harus menggunakan domain @mhs.dinus.ac.id.');
                         }
 
                         $localPart = substr($value, 0, strrpos($value, '@'));
                         if (strlen($localPart) != 12) {
-                            $fail('Bagian sebelum @ harus memiliki tepat 12 karakter.');
+                            $fail('Pastikan bagian sebelum @ memiliki tepat 12 karakter, ya!');
                         }
                     },
                 ],
@@ -43,29 +43,32 @@ class AuthController extends Controller
                 $request->password_confirmation
             );
 
-            return ApiResponseService::success($response, 'Congratulations! You have successfully registered.');
+            return ApiResponseService::success($response, 'Selamat! Registrasi Anda berhasil.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return ApiResponseService::error($e->errors(), 'Validation failed', 422);
+            return ApiResponseService::error($e->errors(), 'Oops! Ada beberapa kesalahan pada data Anda. Silakan cek lagi.', 422);
         } catch (\Illuminate\Auth\AuthenticationException $e) {
             return ApiResponseService::error(null, $e->getMessage(), 401);
         } catch (\Exception $e) {
-            return ApiResponseService::error(null, 'An error occurred during registration', 500);
+            return ApiResponseService::error(null, 'Maaf, terjadi kesalahan. Silakan coba lagi nanti!', 500);
         }
     }
-    public function login(Request $request) {
-        $request->validate([
-            'email_mhs' => 'required|email',
-            'password' => 'required|string|min:8'
-        ]);
 
+    public function login(Request $request) {
         try {
+            $request->validate([
+                'email_mhs' => 'required|email',
+                'password' => 'required|string|min:8'
+            ]);
+
             $data = $this->authService->login($request->email_mhs, $request->password);
-            return ApiResponseService::success($data, 'Congratulations! You have successfully logged in');
+            return ApiResponseService::success($data, 'Selamat datang kembali! Anda berhasil masuk.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return ApiResponseService::error($e->errors(), 'Ups! Ada beberapa kesalahan saat validasi data. Silakan periksa lagi.', 422);
         } catch (\Illuminate\Auth\AuthenticationException $e) {
-            return ApiResponseService::error(null, 'Login failed. Invalid email or password.', 401);
+            return ApiResponseService::error(null, 'Hmm, email atau password Anda tidak cocok. Coba lagi, ya!', 401);
         } catch (\Exception $e) {
-            return ApiResponseService::error(null, 'An error occurred during login', 500);
+            return ApiResponseService::error(null, 'Maaf, terjadi kesalahan tak terduga. Coba lagi nanti!', 500);
         }
     }
 
