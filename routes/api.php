@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Mahasiswa Routes */
+/* User Routes */
 /*----------------------------------- AUTH -----------------------------------*/
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -42,14 +43,12 @@ Route::get('/reservations/confirm-team/{reservationId}/{userId}', [ReservationCo
 /* Admin Routes */
 /*----------------------------------- MANAGE TABLE -----------------------------------*/
 Route::resource('table', TableController::class)->middleware(['auth:api', 'admin']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('user',UserController::class);
-    Route::get('/user-profile', [UserController::class, 'show']);
+Route::apiResource('user', UserController::class);
+Route::get('/user-profile', [UserController::class, 'show']);
 
-    Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
+Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
 
-    Route::get('/map', [MapController::class, 'getAvailableTables']);
-    Route::get('/detail-reservation-table', [MapController::class, 'getTableDetails']);
-});
-
+Route::get('/map', [MapController::class, 'getAvailableTables']);
+Route::get('/detail-reservation-table', [MapController::class, 'getTableDetails']);
