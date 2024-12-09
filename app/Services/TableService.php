@@ -17,7 +17,7 @@ class TableService
                 $table->thumbnail = url("storage/thumbnails/{$table->thumbnail}");
             }
         }
-        return $table;
+        return $tables;
     }
 
     public function getTableById($id)

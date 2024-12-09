@@ -28,6 +28,7 @@ class StoreTableRequest extends FormRequest
             'total_seats' => 'required|integer|min:1',
             'table_number' => 'required|string|unique:tables,table_number',
             'thumbnail' => 'required|file|mimes:jpeg,png,jpg|max:20000',
+            'type' => 'required|string|in:Individu,Kelompok',
             'is_available' => 'required|boolean',
         ];
     }

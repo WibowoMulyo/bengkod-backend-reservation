@@ -16,7 +16,7 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function show()
+    public function index()
     {
         try{
             $userId = Auth::id();
@@ -26,7 +26,7 @@ class UserController extends Controller
             return ApiResponseService::error((object)[], 'Gagal mengambil data user', 400);
         }
     }
-    public function showUserProfile()
+    public function show()
     {
         try{
             $userId = Auth::id();
@@ -40,13 +40,22 @@ class UserController extends Controller
     {
         try{
             $validatedData = $request->validated();
-            $user = $this->userService->updateUserData($validatedData);
+            $userIdFromUrl = $request->route('user');
+            $user = $this->userService->updateUserData($userIdFromUrl, $validatedData);
             return ApiResponseService::success($user, 'Berhasil mengupdate data user', 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return ApiResponseService::error($e->errors(), 'Validasi gagal', 422);
-
         } catch (\Exception $e) {
             return ApiResponseService::error((object)[], 'Gagal mengupdate data user: ' . $e->getMessage(), 400);
+        }
+    }
+    public function destroy($id)
+    {
+        try{
+            $this->userService->destroy($id);
+            return ApiResponseService::success((object) [],'Berhasil menghapus data photo pada user', 200);
+        } catch (\Exception $e) {
+            return ApiResponseService::error((object)[], 'Gagal menghapus data photo pada user: ' . $e->getMessage(), 400);
         }
     }
 }
