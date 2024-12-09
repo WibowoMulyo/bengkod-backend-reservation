@@ -16,7 +16,7 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function show()
+    public function showUser()
     {
         try{
             $userId = Auth::id();
@@ -36,15 +36,14 @@ class UserController extends Controller
             return ApiResponseService::error((object)[], 'Gagal mengambil data user', 400);
         }
     }
-    public function update(UpdateUserRequest $request)
+    public function updateUserProfile(UpdateUserRequest $request)
     {
         try{
             $validatedData = $request->validated();
-            $user = $this->userService->updateUserData($validatedData);
+            $user = $this->userService->updateUserData( $validatedData);
             return ApiResponseService::success($user, 'Berhasil mengupdate data user', 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return ApiResponseService::error($e->errors(), 'Validasi gagal', 422);
-
         } catch (\Exception $e) {
             return ApiResponseService::error((object)[], 'Gagal mengupdate data user: ' . $e->getMessage(), 400);
         }

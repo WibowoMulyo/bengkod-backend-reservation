@@ -49,7 +49,12 @@ class AuthService {
             throw new AuthenticationException('Email atau password salah.');
         }
 
-        return $user;
+        $token = JWTAuth::fromUser($user);
+
+        $response = $user->toArray();
+        $response['token'] = $token;
+
+        return $response;
     }
 
     public function logout(){
