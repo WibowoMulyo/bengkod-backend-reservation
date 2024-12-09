@@ -44,7 +44,7 @@ class UserController extends Controller
             return ApiResponseService::success($user, 'Berhasil mengupdate data user', 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return ApiResponseService::error($e->errors(), 'Validasi gagal', 422);
-                
+
         } catch (\Exception $e) {
             return ApiResponseService::error((object)[], 'Gagal mengupdate data user: ' . $e->getMessage(), 400);
         }

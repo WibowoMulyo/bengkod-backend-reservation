@@ -16,7 +16,7 @@ class UserService
     public function getUserProfile($userId)
     {
         $user  = User::select('name', 'email_mhs', 'photo')->where('id', $userId)->first();
-        
+
         if ($user && $user->photo) {
             $user->photo = url("storage/photos/{$user->photo}");
         }
@@ -27,7 +27,7 @@ class UserService
     {
         $userId = Auth::id();
         $user = User::findOrFail($userId);
-        
+
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }

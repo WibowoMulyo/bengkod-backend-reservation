@@ -30,6 +30,7 @@ class User extends Authenticatable implements JWTSubject
         'photo',
         'penalty_count',
         'ban_until',
+        'is_reserve',
         'is_admin',
     ];
 

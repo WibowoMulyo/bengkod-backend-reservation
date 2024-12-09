@@ -19,20 +19,27 @@ use App\Http\Controllers\ReservationController;
 |
 */
 
+/* Mahasiswa Routes */
+/*----------------------------------- AUTH -----------------------------------*/
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
 Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::apiResource('table', TableController::class);
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-
     Route::get('/user', [UserController::class, 'show']);
-    
-    Route::get('/user-profile', [UserController::class, 'showUserProfile']);
-    Route::patch('/user-update', [UserController::class, 'update']);
-    Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
+    Route::patch('/user', [UserController::class, 'update']);
 });
 
+/*----------------------------------- RESERVATION -----------------------------------*/
+Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth:api');
+Route::get('/reservations', [ReservationController::class, 'checkStatus'])->middleware('auth:api');
+Route::get('/reservations/confirm-presence', [ReservationController::class, 'confirmPresence'])->middleware('auth:api');
+Route::get('/reservations/confirm-team/{reservationId}/{userId}', [ReservationController::class, 'confirmTeam'])->name('reservations.confirmTeam');
+
+/* Admin Routes */
+/*----------------------------------- MANAGE TABLE -----------------------------------*/
+Route::resource('table', TableController::class)->middleware(['auth:api', 'admin']);
