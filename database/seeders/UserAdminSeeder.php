@@ -18,6 +18,7 @@ class UserAdminSeeder extends Seeder
             'email_mhs' => 'admin@admin.com',
             'password' => bcrypt('rahasia12'),
             'photo' => 'default.jpg',
+            'penalty_count' => 0,
             'is_admin' => true,
         ]);
     }

@@ -8,7 +8,7 @@ class ApiResponseService {
         return response()->json([
             'status' => 'success',
             'message' => $message,
-            'data' => $data
+            'data' => $data ?? (object)[]
         ], $code);
     }
 
@@ -17,7 +17,7 @@ class ApiResponseService {
         return response()->json([
             'status' => 'error',
             'message' => $message,
-            'data' => $data
+            'data' => $data ?? (object)[]
         ], $code);
     }
 }

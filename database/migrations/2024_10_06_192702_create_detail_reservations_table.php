@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('status');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
+            $table->string("status");
             $table->softDeletes();
             $table->timestamps();
         });
