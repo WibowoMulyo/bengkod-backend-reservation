@@ -19,38 +19,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* User Routes */
+/* General Routes*/
 /*----------------------------------- AUTH -----------------------------------*/
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
-Route::middleware(['auth:api', 'admin'])->group(function () {
-    Route::apiResource('table', TableController::class);
-});
+/*----------------------------------- DASHBOARD USER PROFILE -----------------------------------*/
+Route::get('/user-profile', [UserController::class, 'showUserProfile'])->middleware('auth:api');
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/user', [UserController::class, 'show']);
-    Route::patch('/user', [UserController::class, 'update']);
-});
+/*----------------------------------- DASHBOARD CALENDAR -----------------------------------*/
+Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations'])->middleware('auth:api');
+
+
+/* User Routes */
+/*----------------------------------- AUTH -----------------------------------*/
+Route::post('/register', [AuthController::class, 'register']);
+
+/*----------------------------------- USER PROFILE -----------------------------------*/
+Route::get('/get-user', [UserController::class, 'showUser']);
+Route::patch('/update-user',[UserController::class, 'updateUserProfile']);
 
 /*----------------------------------- RESERVATION -----------------------------------*/
 Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth:api');
 Route::get('/reservations', [ReservationController::class, 'checkStatus'])->middleware('auth:api');
 Route::get('/reservations/confirm-presence', [ReservationController::class, 'confirmPresence'])->middleware('auth:api');
 Route::get('/reservations/confirm-team/{reservationId}/{userId}', [ReservationController::class, 'confirmTeam'])->name('reservations.confirmTeam');
+Route::get('/map', [MapController::class, 'getAvailableTables'])->middleware('auth:api');
+Route::get('/detail-reservation-table', [MapController::class, 'getTableDetails'])->middleware('auth:api');
+
 
 /* Admin Routes */
 /*----------------------------------- MANAGE TABLE -----------------------------------*/
-Route::resource('table', TableController::class)->middleware(['auth:api', 'admin']);
-Route::post('/logout', [AuthController::class, 'logout']);
-
-Route::get('/get-user', [UserController::class, 'showUser']);
-    Route::patch('/update-user',[UserController::class, 'updateUserProfile']);
-
-Route::get('/user-profile', [UserController::class, 'showUserProfile']);
-
-Route::get('/calendar', [CalendarController::class, 'getWeeklyReservations']);
-
-Route::get('/map', [MapController::class, 'getAvailableTables']);
-Route::get('/detail-reservation-table', [MapController::class, 'getTableDetails']);
+Route::apiResource('table', TableController::class)->middleware(['auth:api', 'admin']);
