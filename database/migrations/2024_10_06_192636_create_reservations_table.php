@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('purpose');
             $table->string('time_slot');
             $table->date('date');
-            $table->dateTime('expires_at');
             $table->foreignId('table_id')->constrained()->cascadeOnDelete();
             $table->timestamp('expires_at')->nullable();
             $table->softDeletes();
