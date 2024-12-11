@@ -37,9 +37,8 @@ class AuthService {
 
     public function login($emailMhs, $password) {
         $user = $this->validateCredentials($emailMhs, $password);
-        $token = JWTAuth::fromUser($user);
 
-        return ['token' => $token];
+        return $user;
     }
 
     public function validateCredentials($emailMhs, $password){

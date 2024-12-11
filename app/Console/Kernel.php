@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('reservations:handle-violations')->everyThirtyMinutes();
+        $schedule->command('reservations:handle-completed')->hourly();
+        $schedule->command('users:reset-reserve-status')->dailyAt('00:00');
     }
 
     /**
