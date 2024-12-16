@@ -111,6 +111,7 @@ class ReservationService
 
             return [
                 'code' => $reservation->code,
+                'expires_at' => $reservation->expires_at
             ];
         } catch (\Exception $e) {
             DB::rollBack();
